@@ -1,0 +1,9 @@
+{
+  "name": "phi-torus",
+  "version": "0.2.0",
+  "main": "index.html",
+  "author": "Johnny Human <john.wennstrom@protonmail.com>",
+  "license": "MIT",
+  "dependencies": {
+  }
+}
