@@ -1,5 +1,5 @@
-# phi-torus
-An array of torus that expands to infinity to the `n:th` torus.
+# phi-torus version 0.3.0
+An array of torus that expands to the `n:th` torus based on ratio of Phi.
 
 Every torus `n` has:
 
