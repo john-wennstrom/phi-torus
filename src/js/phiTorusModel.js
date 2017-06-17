@@ -11,10 +11,10 @@ function initPhiTorusModel(globals) {
 
     let diameters = getDia(2)
 
+    // Lucas 9 * lucas(2 * dInt + 1)
     for (let dInt = 0; dInt < diameters.length; dInt++) {
         group.add(create(9 * lucas(2 * dInt + 1), 36, diameters[dInt].iDia, diameters[dInt].oDia))
     }
-
 
     function getDia(amount) {
         let iDia = new Array(amount + 1)
@@ -97,7 +97,7 @@ function initPhiTorusModel(globals) {
         // CrossSections
         let geometry2 = new THREE.BufferGeometry()
         geometry2.addAttribute('position', new THREE.BufferAttribute(crossSections, 3))
-        let material2 = new THREE.PointsMaterial({size: 0.06, color: 0x999999})
+        let material2 = new THREE.PointsMaterial({size: 0.01, color: 0x999999})
         globals.world.sceneAdd(new THREE.Points(geometry2, material2))
 
         // Lines
@@ -110,7 +110,7 @@ function initPhiTorusModel(globals) {
         // Points
         let geometry = new THREE.BufferGeometry()
         geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3))
-        let material = new THREE.PointsMaterial({size: 0.06, color: 0x666666})
+        let material = new THREE.PointsMaterial({size: 0.01, color: 0x666666})
         return new THREE.Points(geometry, material)
 
     }
@@ -196,9 +196,13 @@ function initPhiTorusModel(globals) {
 
         let geometry3 = new THREE.BufferGeometry()
         geometry3.addAttribute('position', new THREE.BufferAttribute(linePoints, 3))
-        let material3 = new THREE.LineBasicMaterial({ color: 0x666666, linewidth: 0.02,})
+        //let material3 = new THREE.LineBasicMaterial({ color: 0x666666, linewidth: 0.002,})
+        let material3 = new THREE.MeshBasicMaterial({color: 0x666666})
 
-        return new THREE.Line(geometry3, material3)
+
+
+        //return new THREE.Line(geometry3, material3)
+        return new THREE.Mesh(geometry3, material3)
     }
 
 

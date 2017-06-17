@@ -5,5 +5,6 @@
   "author": "Johnny Human <john.wennstrom@protonmail.com>",
   "license": "MIT",
   "dependencies": {
+    "underscore": "^1.8.3"
   }
 }

@@ -28,7 +28,9 @@ $(function () {
     globals = initGlobals()
 
     //globals.torusModel = initTorusModel(globals)
-    globals.torusModel = initPhiTorusModel(globals)
+    //globals.torusModel = initPhiTorusModel(globals)
+
+    globals.chestahedron = initChestahedron(globals)
     globals.world.render()
 
 })
