@@ -100,7 +100,6 @@ Chestahedron.prototype.drawLines = function () {
     this.addLine( Float32Array.from(flatten( [A, B, C, A] )))
     this.addLine( Float32Array.from(flatten( [T, P, B, Q] )))
     this.addLine( Float32Array.from(flatten( [P, C, R] )))
-
 }
 
 Chestahedron.prototype.addLine = function(line) {

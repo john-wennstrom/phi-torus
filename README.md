@@ -22,5 +22,7 @@ initPhiTorusModel(globals)
 ```
 Initialize the points of a chestahedron:
 ```
-initChestahedron(globals)
+let chestahdron = new Chestahedron(globals)
+chestahedron.drawPoints()
+chestahedron.drawLines()
 ```
