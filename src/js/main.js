@@ -30,7 +30,9 @@ $(function () {
     //globals.torusModel = initTorusModel(globals)
     //globals.torusModel = initPhiTorusModel(globals)
 
-    globals.chestahedron = initChestahedron(globals)
+    globals.chestahedron = new Chestahedron(globals)
+    globals.chestahedron.drawPoints()
+    globals.chestahedron.drawLines()
     globals.world.render()
 
 })
