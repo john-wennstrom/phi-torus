@@ -33,6 +33,7 @@ $(function () {
     globals.chestahedron = new Chestahedron(globals)
     globals.chestahedron.drawPoints()
     globals.chestahedron.drawLines()
+    globals.chestahedron.drawMesh()
     globals.world.render()
 
 })

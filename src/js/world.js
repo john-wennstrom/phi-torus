@@ -6,7 +6,7 @@ function initWorld(globals) {
         window.innerWidth / - 2,
         window.innerWidth / 2,
         window.innerHeight / 2,
-        window.innerHeight / - 2, - 200, 200);
+        window.innerHeight / - 2, - 100, 100);
     let renderer = new THREE.WebGLRenderer({ antialias: true })
     let controls
 
@@ -23,24 +23,19 @@ function initWorld(globals) {
 
         // Lights
         let directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8)
-        directionalLight1.position.set(0, 100, 50)
+        directionalLight1.position.set(0, 10, 50)
         scene.add(directionalLight1)
-        let directionalLight4 = new THREE.DirectionalLight(0xffffff, 0.3)
-        directionalLight4.position.set(0, 100, - 50)
-        scene.add(directionalLight4)
-        let directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.8)
-        directionalLight2.position.set(0, - 100, 50)
-        scene.add(directionalLight2)
-        let directionalLight3 = new THREE.DirectionalLight(0xffffff, 0.8)
-        directionalLight3.position.set(0, - 100, - 50)
-        scene.add(directionalLight3)
+
+        var light = new THREE.PointLight( 0xffffff, 1 );
+        camera.add( light );
+
 
         // Camera
-        camera.zoom = 40
+        camera.zoom = 20
         camera.updateProjectionMatrix()
         camera.position.x = 0
         camera.position.y = 0
-        camera.position.z = 10
+        camera.position.z = 20
 
         // Controls
         controls = new THREE.OrbitControls(camera, container.get(0))
