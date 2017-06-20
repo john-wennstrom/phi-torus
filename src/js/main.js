@@ -2,38 +2,36 @@ globals = {}
 
 $(function () {
 
-    let raycaster = new THREE.Raycaster()
-    let mouse = new THREE.Vector2()
     let mouseDown = false
+
+    globals = initGlobals()
 
     window.addEventListener('resize', function () {
         globals.world.onWindowResize()
     }, false)
 
     document.addEventListener( 'mousemove', function (event) {
-        event.preventDefault()
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1
-        mouse.y = - (event.clientY / window.innerHeight) * 2 + 1
-        raycaster.setFromCamera(mouse, globals.world.camera)
+        //event.preventDefault()
+        globals.world.mouse.x = (event.clientX / window.innerWidth) * 2 - 1
+        globals.world.mouse.y = - (event.clientY / window.innerHeight) * 2 + 1
 
-        //checkForIntersections()
     }, false)
 
     document.addEventListener('mousedown', function (event) {
         event.preventDefault()
-        raycaster.setFromCamera(mouse, globals.world.camera)
+        globals.world.raycaster.setFromCamera(globals.world.mouse, globals.world.camera)
         mouseDown = true
     }, false)
 
-    globals = initGlobals()
 
     //globals.torusModel = initTorusModel(globals)
     //globals.torusModel = initPhiTorusModel(globals)
 
-    globals.chestahedron = new Chestahedron(globals)
-    globals.chestahedron.drawPoints()
-    globals.chestahedron.drawLines()
-    globals.chestahedron.drawMesh()
+    globals.chestahedron = new Chestahedron(globals, {points:false})
+    globals.targets.push(globals.chestahedron.chestahedron.children[1])
+    //globals.chestahedron.drawPoints()
+    //globals.chestahedron.drawLines()
+    //globals.chestahedron.drawMesh()
     globals.world.render()
 
 })
