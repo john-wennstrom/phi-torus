@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-earcut@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/earcut/-/earcut-2.1.1.tgz#157634e5f3ebb42224e475016e86a5b6ce556b45"
+threex.domevents@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/threex.domevents/-/threex.domevents-1.0.1.tgz#1c02d2f0fbf5f369125f46d5ae329160c9bbf676"
 
 underscore@^1.8.3:
   version "1.8.3"

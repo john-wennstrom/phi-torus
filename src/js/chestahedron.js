@@ -8,31 +8,32 @@ function Chestahedron(globals, options) {
     let defaults = {
         radius: null,
         faceArea: null,
-        scale: 13
+        scale: 13,
+        faces: true,
+        lines: true,
+        points: true
     }
 
     // protected
     this.options = globals.setDefaults(options, defaults)
-    this.geometry = new THREE.BufferGeometry()
-    this.solid = new THREE.Object3D()
+    this.chestahedron = new THREE.Group()
+    globals.world.sceneAdd(this.chestahedron)
 
     // private
     let theta = 94.8309261816304
     let thetaRad = theta / 180 * Math.PI
 
-    globals.world.sceneAdd(this.solid)
-
-    this.baseTriangle = new EquiliteralTriangle({side: this.options.scale})
+    let baseTriangle = new EquiliteralTriangle({side: this.options.scale})
 
     // Calculate vertices
     this.vertices = {}
     this.vertices.A = {
-        x: this.baseTriangle.radius('out'),
+        x: baseTriangle.radius('out'),
         y: 0,
         z: 0
     }
     this.vertices.B = {
-        x: -this.baseTriangle.radius('in'),
+        x: -baseTriangle.radius('in'),
         y: 0,
         z: -this.options.scale / 2
     }
@@ -61,9 +62,25 @@ function Chestahedron(globals, options) {
         y: ( (Math.sin(thetaRad) / 2) / ((1 / Math.sqrt(3)) - ((Math.sqrt(3) / 4) * ((1 / 3) - Math.cos(thetaRad)))) ) * this.options.scale,
         z: 0
     }
+
+    this._draw()
 }
 
-Chestahedron.prototype.drawPoints = function () {
+Chestahedron.prototype._draw = function(){
+    if (this.options.points) {
+        this.chestahedron.add(this.addPoints())
+    }
+
+    if (this.options.lines) {
+        this.chestahedron.add(this.addLines())
+    }
+
+    if (this.options.faces) {
+        this.chestahedron.add(this.addFaces())
+    }
+}
+
+Chestahedron.prototype.addPoints = function () {
     let geometry = new THREE.BufferGeometry()
     let V = this.vertices
 
@@ -79,10 +96,13 @@ Chestahedron.prototype.drawPoints = function () {
 
     geometry.addAttribute('position', new THREE.BufferAttribute(points, 3))
     let material = new THREE.PointsMaterial({size: 0.1, color: 0x666666})
-    this.solid.add(new THREE.Points(geometry, material))
+
+    return new THREE.Points(geometry, material)
 }
 
-Chestahedron.prototype.drawLines = function () {
+Chestahedron.prototype.addLines = function () {
+    let lines = new THREE.Object3D()
+
     let V = this.vertices
     let A = [V.A.x, V.A.y, V.A.z]
     let B = [V.B.x, V.B.y, V.B.z]
@@ -99,13 +119,15 @@ Chestahedron.prototype.drawLines = function () {
         []
     )
 
-    this.addLine(Float32Array.from(flatten([A, Q, T, R, A])))
-    this.addLine(Float32Array.from(flatten([A, B, C, A])))
-    this.addLine(Float32Array.from(flatten([T, P, B, Q])))
-    this.addLine(Float32Array.from(flatten([P, C, R])))
+    lines.add( this.addLine(Float32Array.from(flatten([A, Q, T, R, A]))) )
+    lines.add( this.addLine(Float32Array.from(flatten([A, B, C, A]))) )
+    lines.add( this.addLine(Float32Array.from(flatten([T, P, B, Q]))) )
+    lines.add( this.addLine(Float32Array.from(flatten([P, C, R]))) )
+
+    return lines
 }
 
-Chestahedron.prototype.drawMesh = function () {
+Chestahedron.prototype.addFaces = function () {
     let geometry = new THREE.Geometry()
     let V = this.vertices
     let A = new THREE.Vector3(V.A.x, V.A.y, V.A.z)
@@ -134,26 +156,25 @@ Chestahedron.prototype.drawMesh = function () {
         geometry.vertices.push(vec[i])
     }
     for (let i = 0; i < faces.length; i++) {
-        console.log(new THREE.Face3(faces[i][0], faces[i][1], faces[i][2]))
         geometry.faces.push(new THREE.Face3(faces[i][0], faces[i][1], faces[i][2]))
     }
     //geometry.computeFaceNormals()
 
-    var material = new THREE.MeshLambertMaterial({
-        opacity: 0.8,
+    var material = new THREE.MeshToonMaterial({
+        color: 0xff8248,
+        opacity: 0.95,
         transparent: true
     });
 
-
-    this.solid.add(new THREE.Mesh(geometry, material))
-
+    return new THREE.Mesh(geometry, material)
 }
 
 Chestahedron.prototype.addLine = function (line) {
     let geometry = new THREE.BufferGeometry()
     geometry.addAttribute('position', new THREE.BufferAttribute(line, 3))
-    let material = new THREE.LineBasicMaterial({color: 0x666666, linewidth: 0.002})
-    this.solid.add(new THREE.Line(geometry, material))
+    let material = new THREE.LineBasicMaterial({color: 0x555555, linewidth: 0.002})
+
+    return new THREE.Line(geometry, material)
 }
 
 

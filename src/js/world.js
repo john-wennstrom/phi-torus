@@ -2,19 +2,21 @@ function initWorld(globals) {
 
     let scene = new THREE.Scene()
     let wrapper = new THREE.Object3D()
+    let mouse = new THREE.Vector2(), INTERSECTED
     let camera = new THREE.OrthographicCamera(
-        window.innerWidth / - 2,
+        window.innerWidth / -2,
         window.innerWidth / 2,
         window.innerHeight / 2,
-        window.innerHeight / - 2, - 100, 100);
-    let renderer = new THREE.WebGLRenderer({ antialias: true })
-    let controls
+        window.innerHeight / -2, -100, 100);
+    let renderer = new THREE.WebGLRenderer({antialias: true})
+    let raycaster = new THREE.Raycaster()
+    let controls, container
 
     init()
 
     function init() {
 
-        let container = $('#container')
+        container = $('#container')
         renderer.setSize(window.innerWidth, window.innerHeight)
         container.append(renderer.domElement)
 
@@ -26,8 +28,8 @@ function initWorld(globals) {
         directionalLight1.position.set(0, 10, 50)
         scene.add(directionalLight1)
 
-        var light = new THREE.PointLight( 0xffffff, 1 );
-        camera.add( light );
+        var light = new THREE.PointLight(0xffffff, 1);
+        camera.add(light);
 
 
         // Camera
@@ -41,31 +43,25 @@ function initWorld(globals) {
         controls = new THREE.OrbitControls(camera, container.get(0))
         controls.addEventListener('change', render)
 
-        render()
+        animate()
     }
 
     function render() {
         _render()
     }
 
-    function startAnimation(callback) {
-        console.log("starting animation")
-        _loop(function () {
-            if (! globals.stlEditing) { callback() }
-            _render()
-        });
-
+    function animate() {
+        requestAnimationFrame(animate)
+        _render()
+        update()
     }
 
     function _render() {
         renderer.render(scene, camera)
     }
 
-    function _loop(callback) {
-        callback()
-        requestAnimationFrame(function () {
-            _loop(callback)
-        });
+    function update() {
+        checkIntersections()
     }
 
     function sceneAdd(object) {
@@ -82,10 +78,10 @@ function initWorld(globals) {
 
     function onWindowResize() {
         camera.aspect = window.innerWidth / window.innerHeight
-        camera.left = - window.innerWidth / 2
+        camera.left = -window.innerWidth / 2
         camera.right = window.innerWidth / 2
         camera.top = window.innerHeight / 2
-        camera.bottom = - window.innerHeight / 2
+        camera.bottom = -window.innerHeight / 2
         camera.updateProjectionMatrix()
 
         renderer.setSize(window.innerWidth, window.innerHeight)
@@ -98,15 +94,43 @@ function initWorld(globals) {
         controls.enableRotate = state
     }
 
+    function checkIntersections() {
+        raycaster.setFromCamera(mouse, camera)
+
+        let intersects = raycaster.intersectObjects(globals.targets)
+
+        if (intersects.length > 0) {
+            if (INTERSECTED)
+                INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
+            // store reference to closest object as current intersection object
+            INTERSECTED = intersects[0].object
+            // store color of closest object (for later restoration)
+            INTERSECTED.currentHex = INTERSECTED.material.color.getHex()
+            // set a new color for closest object
+            INTERSECTED.material.color.setHex(0xffff00)
+
+        }
+        else {
+            // restore previous intersection object (if it exists) to its original color
+            if (INTERSECTED)
+                INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
+            // remove previous intersection object reference
+            INTERSECTED = null
+        }
+    }
+
     return {
         sceneRemove: sceneRemove,
         sceneAdd: sceneAdd,
         sceneClear: sceneClear,
         render: render,
         onWindowResize: onWindowResize,
-        startAnimation: startAnimation,
+        animate: animate,
         enableControls: enableControls,
+        checkIntersections: checkIntersections,
+        mouse: mouse,
         scene: scene,
-        camera: camera
+        camera: camera,
+        raycaster: raycaster
     }
 }
