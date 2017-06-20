@@ -1,4 +1,4 @@
-# phi-torus version 0.3.1
+# phi-torus version 0.3.2
 An array of torus that expands to the `n:th` torus based on ratio of Phi.
 
 Every torus `n` has:
@@ -22,7 +22,10 @@ initPhiTorusModel(globals)
 ```
 Initialize the points of a chestahedron:
 ```
-let chestahdron = new Chestahedron(globals)
-chestahedron.drawPoints()
-chestahedron.drawLines()
+let chestahdron = new Chestahedron(globals, {
+    scale: 1,
+    lines: true,
+    faces: true,
+    points: false
+})
 ```
