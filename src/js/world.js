@@ -101,19 +101,18 @@ function initWorld(globals) {
 
         if (intersects.length > 0) {
             if (INTERSECTED)
-                INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
+                INTERSECTED.material.color.set(INTERSECTED.currentColor)
             // store reference to closest object as current intersection object
             INTERSECTED = intersects[0].object
-            // store color of closest object (for later restoration)
-            INTERSECTED.currentHex = INTERSECTED.material.color.getHex()
-            // set a new color for closest object
-            INTERSECTED.material.color.setHex(0xffff00)
-
+            // store color of closest object
+            INTERSECTED.currentColor = '#' + INTERSECTED.material.color.getHexString()
+            // Brighten the object
+            INTERSECTED.material.color.set( globals.colors.ColorLuminance(INTERSECTED.currentColor, 0.2) )
         }
         else {
-            // restore previous intersection object (if it exists) to its original color
+            // restore previous intersection object
             if (INTERSECTED)
-                INTERSECTED.material.color.setHex(INTERSECTED.currentHex)
+                INTERSECTED.material.color.set(INTERSECTED.currentColor)
             // remove previous intersection object reference
             INTERSECTED = null
         }

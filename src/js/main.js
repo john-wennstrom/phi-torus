@@ -26,6 +26,7 @@ $(function () {
 
     //globals.torusModel = initTorusModel(globals)
     //globals.torusModel = initPhiTorusModel(globals)
+    globals.colors = colors(globals)
 
     globals.chestahedron = new Chestahedron(globals, {points:false})
     globals.targets.push(globals.chestahedron.chestahedron.children[1])
